@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © Dxvn, Inc. All rights reserved.
+ * @author  Tran Ngoc Duc <caothu91@gmail.com>
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Template for filter items block
+ *
+ * @var $block       \Magento\LayeredNavigation\Block\Navigation\FilterRenderer
+ * @var $filter      \Magento\Catalog\Model\Layer\Filter\FilterInterface
+ * @var $filterItems array
+ * @var $filterRange array  \Diepxuan\LayeredNavigation\Block\Navigation::getPriceRange()
+ * @var $filterUrl   string \Diepxuan\LayeredNavigation\Block\Navigation::getFilterUrl()
+ */
+?>
+<?php if ( $filter instanceof Magento\CatalogSearch\Model\Layer\Filter\Price ): ?>
+    <script>
+        var price_url = "<?php echo $filterUrl;?>";
+        require([
+            'jquery',
+            "jquery/ui",
+            'domReady!'
+        ], function ($) {
+            $("div#price-slider").slider({
+                range: true,
+                min: <?php echo $filterRange['min']?>,
+                max: <?php echo $filterRange['max']?>,
+                values: [ <?php echo $filterRange['min']?>, <?php echo $filterRange['max']?> ],
+                slide: function (event, ui) {
+                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                },
+                change: function (event, ui) {
+                    window.location.href = price_url + ui.values[0] + "-" + ui.values[1];
+                }
+            });
+            $("#amount").val("$" + $("#price-slider").slider("values", 0) +
+                " - $" + $("#price-slider").slider("values", 1));
+        });
+    </script>
+    <p>
+        <label for="amount">Price range:</label>
+        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+    </p>
+    <div id="price-slider"></div>
+
+<?php else: ?>
+    <ol class="items">
+        <?php foreach ( $filterItems as $filterItem ): ?>
+            <li class="item">
+                <?php if ( $filterItem->getCount() > 0 ): ?>
+                    <a href="<?php echo $block->escapeUrl( $filterItem->getUrl() ) ?>">
+                        <?php echo $filterItem->getLabel() ?>
+                        <?php if ( $this->helper( '\Magento\Catalog\Helper\Data' )->shouldDisplayProductCountOnLayer() ): ?>
+                            <span class="count">
+                                <?php echo $filterItem->getCount() ?>
+                                <span class="filter-count-label">
+                                <?php if ( $filterItem->getCount() == 1 ): ?>
+                                    <?php echo __( 'item' ) ?><?php else: ?><?php echo __( 'items' ) ?>
+                                <?php endif; ?>
+                                </span>
+                            </span>
+                        <?php endif; ?>
+                    </a>
+                <?php else: ?>
+                    <?php echo $filterItem->getLabel() ?>
+                    <?php if ( $this->helper( '\Magento\Catalog\Helper\Data' )->shouldDisplayProductCountOnLayer() ): ?>
+                        <span class="count"><?php echo $filterItem->getCount() ?><span class="filter-count-label">
+                        <?php if ( $filterItem->getCount() == 1 ): ?><?php echo __( 'item' ) ?><?php else: ?><?php echo __( 'items' ) ?><?php endif; ?></span></span>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach ?>
+    </ol>
+<?php endif; ?>

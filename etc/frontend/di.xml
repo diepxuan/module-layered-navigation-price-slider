@@ -8,8 +8,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\LayeredNavigation\Block\Navigation\FilterRenderer"
-                type="Diepxuan\LayeredNavigation\Block\Navigation\FilterRenderer"/>
-    <type name="Diepxuan\LayeredNavigation\Block\Navigation\FilterRenderer">
+                type="Diepxuan\LayeredNavigationPriceSlider\Block\Navigation\FilterRenderer"/>
+    <type name="Diepxuan\LayeredNavigationPriceSlider\Block\Navigation\FilterRenderer">
         <plugin name="swatches_layered_renderer" type="Magento\Swatches\Model\Plugin\FilterRenderer" sortOrder="1"/>
     </type>
 </config>

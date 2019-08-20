@@ -17,8 +17,9 @@
  * @var $filterRange array  \Diepxuan\LayeredNavigation\Block\Navigation::getPriceRange()
  * @var $filterUrl   string \Diepxuan\LayeredNavigation\Block\Navigation::getFilterUrl()
  */
+$isEnable = $filter instanceof Magento\CatalogSearch\Model\Layer\Filter\Price;
 ?>
-<?php if ( $filter instanceof Magento\CatalogSearch\Model\Layer\Filter\Price ): ?>
+<?php if ( $isEnable ): ?>
     <script>
         var price_url = "<?php echo $filterUrl;?>";
         require([
